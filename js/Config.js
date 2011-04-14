@@ -13,5 +13,5 @@ J.LoanCalc.Config = function()	{
 };
 
 J.LoanCalc.debug = function(s)	{
-	console.log(s);
+	//console.log(s);
 };
