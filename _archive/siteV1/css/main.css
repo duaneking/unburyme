@@ -1,0 +1,269 @@
+body	{
+	background-image: url('../img/bg.png');
+	margin: 0px;
+	padding: 0px;
+	font-family: Arial;
+	color: #333;
+	font-size:100%;
+}
+
+#enclosure	{
+	background: #fff;
+	width:800px;
+	margin: 0 auto;
+	min-height: 800px;
+	height: auto !important;
+	height: 800px;
+	text-align: center;
+	border: 2px #d4d4d4 solid;
+}
+
+#header	{
+	background-image: url(../img/header.png);
+	width: 800px;
+	height: 100px;
+	margin: 0px;
+	padding: 0px;
+}
+
+#controlBar	{
+	position: relative;
+	left: 48px;
+	width: 704px;
+	height: 74px;
+	background-image: url('../img/blueTab.png');
+}
+
+.help	{
+	position:absolute;
+	display: inline;
+	width: 17px;
+	height: 17px;
+	margin-left: 5px;
+	background-image: url('../img/help.png');
+}
+
+.totalMonthlyPayment	{
+	width: 300px;
+	position: absolute;
+	left: 0px;
+}
+
+.fieldTitle
+	{
+	font-size: 1.1em;
+	position: absolute;
+	top: 10px;
+	left: 10px;
+	color: #fff;
+	font-weight: bold;
+}
+
+.totalMonthlyPayment .fieldInput,
+.loanBarInput .fieldInput	{
+	font-size: 1.20em;
+	position: absolute;
+	color: #fff;
+	top: 30px;
+	left: 10px;
+	font-weight: bold;
+}
+
+.totalMonthlyPayment .fieldInput input	{
+	position: relative;
+	left: 5px;
+	top: 3px;
+	height: 35px;
+	width: 200px;
+	font-size: 1.20em;
+	color: #333;
+}
+
+.paymentType	{
+	position: absolute;
+	width:400px;
+	left: 300px;	
+}
+
+.paymentTypeSelect	{
+	position: absolute;
+	left: 10px;
+	top: 35px;
+	height: 50px;
+}
+
+.paymentTypeSelect a	{
+	text-decoration:none;
+}
+
+.paymentTypeButton	{
+	width: 120px;
+	display: block;
+	padding-top: 3px;
+	height: 30px;
+	font-size: 1.2em;
+	border: 1px solid #d4d4d4;
+	font-weight: bold;
+	position: absolute;
+	vertical-align: middle;
+}
+
+#snowfall	{
+	left: 120px;
+}
+
+.selectedPaymentType	{
+	color: #fff;
+	background-color: #99f1ff;
+}
+
+.unselectedPaymentType	{
+	color: #a4a4a4;
+	background-color: #badbe0;
+}
+
+/*
+ * Loan Bar Input
+ */
+
+#loanBarInputContainer	{
+	width: 800px;
+}
+
+.createLoanPlus	{
+	position: relative;
+	width: 66px;
+	height: 32px;
+	left: 384px;
+	background-image: url('../img/greenPlus.png');
+}
+
+.loanBarInput	{
+	position: relative;
+	left: 48px;
+	width: 723px;
+	height: 72px;
+	background-image: url('../img/lightBlueTab.png');
+	background-repeat: no-repeat;
+}
+.loanBarInput .destroyLoanX	{
+	position: absolute;
+	left: 704px;
+	width:19px;
+	height:22px;
+	background-image: url('../img/greenX.png');
+}
+.loanBarInput .input	{
+	position: relative;
+        left: 10px;
+        top: 5px;
+        height: 30px;
+        font-size: 1.20em;
+        color: #333;
+}
+
+.loanBarInput .fieldInput input  {
+        position: relative;
+        top: 3px;
+        height: 35px;
+        font-size: 1.20em;
+        color: #333;
+}
+
+.invalidField	{
+	background-color:#e56464;
+}
+
+.loanBarInput .loanName	{
+	position: absolute;
+	left: 0px;
+	width: 225px;
+}
+.loanBarInput .currentBalance	{
+	position: absolute;
+	left: 225px;
+	width: 175px;
+}
+.loanBarInput .minMonthlyPayment	{
+	position: absolute;
+	left: 405px;
+	width: 175px;
+}
+.loanBarInput .interest	{
+	position: absolute;
+	left: 580px;
+	width: 115px;
+}
+
+.loanBarInput .loanName input	{
+	width: 215px;
+}
+
+.loanBarInput .currentBalance input	{
+	width: 150px;
+	left: 5px;
+}
+
+.loanBarInput .minMonthlyPayment input	{
+	width: 140px;
+	left: 5px;
+}
+
+.loanBarInput .interest	input	{
+	width: 80px;
+	left: 5px;
+}
+
+/*
+ * Result Bar
+ */
+
+#loanBarInputContainer	{
+	width: 800px;
+}
+
+.resultBar	{
+	position: relative;
+	left: 48px;
+	width: 723px;
+	height: 74px;
+	background-image: url('../img/redTab.png');
+	background-repeat: no-repeat;
+}
+.resultBar .inspectResult	{
+	position: absolute;
+	left: 704px;
+	width:19px;
+	height:22px;
+	background-image: url('../img/redMGlass.png');
+}
+
+.resultBar .loanName	{
+	position: absolute;
+	left: 0px;
+	width: 225px;
+}
+.resultBar .payoffDate	{
+	position: absolute;
+	left: 225px;
+	width: 175px;
+}
+.resultBar .totalInterest	{
+	position: absolute;
+	left: 405px;
+	width: 175px;
+}
+
+.monthlyResults	{
+	position: relative;
+	left: 48px;
+	width:723px;
+	background-color:#cccccc;
+}
+92f0ff
+tr.alternateRows1	{
+	background-color:#333333;
+}
+tr.alternateRows2	{
+	background-color:#111111;
+}

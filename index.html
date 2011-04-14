@@ -1,0 +1,113 @@
+
+<html>
+
+<head>
+<title>unbury.me : a becoming debt free calculator</title>
+<link rel='stylesheet' type='text/css' href='css/main.css' media='screen' />
+<link rel='stylesheet' type='text/css' href='css/jquery-ui-1.8.11.custom.css' media='screen' />
+<script type='text/javascript' src='lib/jquery-1.5.1.min.js'></script>
+<script type='text/javascript' src='lib/jquery-ui-1.8.11.custom.min.js'></script>
+<script type='text/javascript' src='js/LoanApp.js'></script>
+<script type='text/javascript' src='js/Config.js'></script>
+<script type='text/javascript' src='js/Loan.js'></script>
+<script type='text/javascript' src='js/ResultBar.js'></script>
+<script type='text/javascript' src='js/Date.js'></script>
+<script type='text/javascript' src='js/functions.js'></script>
+<script type='text/javascript' src='js/Graph.js'></script>
+<script type='text/javascript' src='js/TotalResults.js'></script>
+<script type='text/javascript' src='lib/flot/jquery.flot.js'></script>
+<!--[if lte IE 8]><script language="javascript" type="text/javascript" src="lib/flot/excanvas.min.js"></script><![endif]-->
+<link href='http://fonts.googleapis.com/css?family=Droid+Sans' rel='stylesheet' type='text/css'>
+<link href='http://fonts.googleapis.com/css?family=Ubuntu' rel='stylesheet' type='text/css'>
+</head>
+
+<body>
+
+<div id='enclosure'>
+<div id='moreInfo'>
+	<div id='help' class='moreInfo'>
+		<a class='linkClose'>close</a>
+		<p>help
+	sdfasdf
+	sadfasdfsad
+	asdfasdf
+	asdf</p>
+	</div>
+	<div id='about' class='moreInfo'>
+		<a class='linkClose'>close</a>
+		<p>
+<strong>unbury.me</strong> is a loan calculater created by <a href='http://www.jsantell.com' target='_new' title='jsantell.com'>Jordan Santell</a>
+</p>
+<p>
+The content on this page is licensed under a <a href="http://creativecommons.org/licenses/by/3.0/"> 
+Creative Commons Attribution 3.0 Unported License</a>. Source code for the project may be obtained
+at <a href="https://github.com/jsantell/unbury.me">github</a> and is licensed under
+the <a href="http://www.opensource.org/licenses/mit-license.php">MIT License</a>.
+</p>
+	
+	</div>
+	<div id='feedback' class='moreInfo'>
+		<a class='linkClose'>close</a>
+		<p>feedback
+	sdfasdf
+	sadfasdfsad
+	asdfasdf
+	asdf</p>
+	</div>
+
+</div>		
+<div id='info'><!--<a class='link' id='link_help'>help</a> | --><a class='link' id='link_about'>about</a><!-- | <a class='link' id='link_feedback'>feedback</a>--></div>
+
+<div id='header'><h1>unbury.me</h1><h2>get unburied from debt</h2></div>
+
+
+<div id='helpPopup'>
+	<div class='helpContent' id='help_tmp'>
+<p>The <strong>total monthly payment</strong> is the amount you're able to put into paying off all of your loans every month.</p>
+<p>See what difference in adding $100 more than the total of your loans' minimum payments makes!
+</p> 
+	</div>
+	<div class='helpContent' id='help_pt'>
+<p><strong>Avalanche</strong>: Paying off loans with the <strong>highest interest</strong> rate first.
+</p>
+<p>
+<strong>Snowball</strong>:Paying off loans with the <strong>lowest balance</strong> first.
+</p>
+<p>While <strong>avalanche</strong> results in paying less interest, as well as being debt free sooner, <strong>snowball</strong> pays off individual loans faster, which can be motivating!</p>
+<p>
+Depending on your loans, the outcome may be the same regardless of the method used.
+</p>
+
+	</div>
+</div>
+
+<div id='controlBar'>
+	<div class='totalMonthlyPayment'>
+		<div class='fieldTitle'>Total Monthly Payment</div>
+		<div class='help' id='totalMonthlyPaymentHelp'></div>
+		<div class='fieldInput'>$<input id='totalMonthlyPayment' name='totalMonthlyPayment' /></div>
+		<div id='paymentSlider'></div>
+	</div>
+	<div class='paymentType'>
+		<div class='fieldTitle'>Payment Type</div>
+		<div class='help' id='paymentTypeHelp'></div>
+		<div class='paymentTypeSelect'>
+			<a class='paymentTypeButtonLink avaLink'><div id='avalanche' class='selectedPaymentType paymentTypeButton'>Avalanche</div></a>
+			<a class='paymentTypeButtonLink sfLink'><div id='snowfall' class='unselectedPaymentType paymentTypeButton'>Snowball</div></a>
+		</div>
+	</div>
+</div>
+<div id='loanBarInputContainer'>
+</div> <!-- loanBarInputContainer -->
+<a class='createLoan'><div class='createLoanPlus'> + add loan</div></a>
+<a class='calculate'>.calculate.</a>
+<div id='graphTitle'></div>
+<div id='graph'></div>
+<div id='graphViewOptions'><a class='graphView' id='graph_princRemaining'>Principle Remaining</a> | <a class='graphView' id='graph_princPaid'>Principle Paid</a> |
+<a class='graphView' id='graph_totalInterestPaid'>Total Interest Paid</a> | <a class='graphView' id='graph_monthlyPayment'>Monthly Payment</a></div>
+<div id='totalResultsContainer'></div>
+<div id='allResultsContainer'></div>
+<div id='footer'></div>
+</div> <!--enclosure-->
+</body>
+</html>

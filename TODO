@@ -1,0 +1,23 @@
+Functionality
+	***Cap ridiculous calls/ infinity loops* (See if progress is made)
+	***Check for if first princPaid < 0.01 (goes negative, breaks)
+	*Tutorial
+	*Some problem when min payment is low compared to total (may be infinite loop?)
+Visual
+	***Fill out link information
+	**check diff versions of FF/IE/Chrome/Safari**
+	*Work on month readout
+	*Show only months in graph if < year
+	*Header information
+UX
+	**Deleting a field and then immediately sliding the slider, the event to update (and
+		subsequently invalidate) the field never fires
+	*Change focus on tab/enter
+	*Tab goes to 'add tab' after interest of previous loan
+	*Remove snowfall/avalanche buttons from focus list
+	*Upon new loan, put focus on loan name
+Cleanliness
+	*Change snowfall->snowball in code
+
+Administrative
+	*License	
