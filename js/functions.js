@@ -2,50 +2,6 @@ $(function()	{
 
 	var loanApp = new J.LoanCalc.LoanApp();
 	loanApp.createLoan();
-/*
- * Links/Tooltips
- */
-	$('.link').click(function ()	{
-		if($(this).attr('id')=='link_help')	{
-			$('#help').show();
-			$('#about').hide();
-			$('#feedback').hide();
-		}
-		else if($(this).attr('id')=='link_about')	{
-			$('#help').hide();
-			$('#about').show();
-			$('#feedback').hide();
-		}
-		else if($(this).attr('id')=='link_feedback')	{
-			$('#help').hide();
-			$('#about').hide();
-			$('#feedback').show();
-		}
-	});
-
-	$('.linkClose').click(function ()	{
-		$('.moreInfo').hide()
-	});
-
-
-	$('.help').mouseover(function (e)	{
-		var x = e.pageX + 30;
-		var y = e.pageY - 20;
-		$('#helpPopup').css({left:x+'px',top:y+'px'});
-		
-		if($(this).attr('id')=='totalMonthlyPaymentHelp')
-			$('#help_tmp').show();
-		else if($(this).attr('id')=='paymentTypeHelp')
-			$('#help_pt').show();
-	});
-
-	$('.help').mouseout(function ()	{
-		if($(this).attr('id')=='totalMonthlyPaymentHelp')
-			$('#help_tmp').hide();
-		else if($(this).attr('id')=='paymentTypeHelp')
-			$('#help_pt').hide();
-	});
-
 
 
 /*
@@ -97,7 +53,7 @@ $(function()	{
 		if(timeout)
 			clearTimeout(timeout);
 		timeout = setTimeout(function () {
-			if(loanApp.recalculate)			
+			if(loanApp.autoCalc)			
 				$('input.uninitialized').addClass('invalidField');
 			if(logPositionToPayment(position) < loanApp.totalMinPayment)
 				$('#paymentSlider').slider('option','value',logPaymentToPosition(loanApp.totalMinPayment));
@@ -147,88 +103,112 @@ $(function()	{
 			loanApp.graph.draw('monthlyPayment');		
 		}
 	});
+
 /*
  * Events
  */
-	$('input').live('change', function()	{
-		J.LoanCalc.debug('recalc: '+loanApp.recalculate);
+
+//else need TOTALMONTHLYPAYMENT INPUT
+/*
+
+			if(field=='totalMonthlyPayment')	{
+				loanApp.updatePayment(value);
+					$('#paymentSlider').slider('option','value',logPaymentToPosition(value));				
+				}
+
+*/
+	$('#loanBarInputContainer input').live('change', function()	{
+
 		var uid;
 		var field;
 		var value = $(this).val();
-		
-		// Get loan UID and set field
-		if($(this).hasClass('loanNameInput'))	{
+		alert("!");
+		// Set uid, field
+		if($(this).hasClass('name'))	{
 			uid = $(this).attr('id').substr(13);
 			field = 'name';
-			J.LoanCalc.debug('setting: '+uid+'name');
 		}
-		else if($(this).hasClass('loanBalanceInput'))	{
+		else if($(this).hasClass('balance'))	{
 			uid = $(this).attr('id').substr(16);
 			field = 'balance';
-			J.LoanCalc.debug('setting: '+uid+'balance');
 		}
-		else if($(this).hasClass('loanPaymentInput'))	{
+		else if($(this).hasClass('minPayment'))	{
 			uid = $(this).attr('id').substr(16);
 			field = 'minPayment';
-			J.LoanCalc.debug('setting: '+uid+'minpayment');
 		}
-		else if($(this).hasClass('loanInterestInput'))	{
+		else if($(this).hasClass('interest'))	{
 			uid = $(this).attr('id').substr(17);
 			field = 'interest';
-			J.LoanCalc.debug('setting: '+uid+'interest');
 		}
-		else	{ //#totalMonthlyPayment
-			field = 'totalMonthlyPayment';
+		
+
+		if(loanApp.getLoan(uid).validate(field,value))	{
+
+			loanApp.updateLoan(uid,field,formatNumber(value));
+			if(field=='minPayment')
+				$('#paymentSlider').slider('option','value',logPaymentToPosition(loanApp.totalPayment));
+		
 		}
 
-		//If valid dollar amount input, set field
-		//Move slider if minPayment increases or totalMonthlyPayment changes
-		if(validate(value) && field!='name')	{
-			$(this).removeClass('invalidField');
-			value = numberFormat(value);
-			$(this).val(value);
-			if(field=='totalMonthlyPayment')	{
-				loanApp.updatePayment(value);
-				$('#paymentSlider').slider('option','value',logPaymentToPosition(value));				
-			}
-			else if(field=='minPayment')	{
-				loanApp.updateLoan(uid,field,value);
-				$('#paymentSlider').slider('option','value',logPaymentToPosition(loanApp.totalPayment));
-			}
-			else
-				loanApp.updateLoan(uid,field,value);
-		}
-		//Invalid dollar amount, make input box red
-		else if(!$(this).hasClass('invalidField') && field!='name')	{
+		else if(!$(this).hasClass('invalidField'))	{
 			$(this).addClass('invalidField');
 			if(value=='')
 				$(this).val('')
 		}
 		
-		/*
-		 * No restrictions on name field
-		 * Set as "Loan n" if not entered
-		 */
-		if(field=='name')	{
-			if(value=='')	{
-				value = 'Loan '+(parseInt(uid)+1);
-				$(this).val(value);
-				$(this).css('color','#cccccc');
-			}
-			else
-				$(this).css('color','#444444');
-			loanApp.updateLoan(uid,field,value);
-		}
-
+		resetEmptyEntry(uid,field,value);
+		
 		//If it's an initialized loan, attempt to recalculate
 		//and make all uninitialized inputs invalid
-		if(!$('#loanBarInput'+uid).hasClass('uninitialized') && loanApp.recalculate)	{
+		if(!$('#loanbar'+uid).hasClass('uninitialized') && loanApp.autoCalc)	{
 			$('input.uninitialized').addClass('invalidField');
 			calculate();
 		}
 	});
 
 
+	var calculate = function(firstCall)	{
+		if(firstCall || loanApp.autoCalc)	{
+			//If no invalidFields, calculate and set blank fields to default values
+			if($('input').hasClass('invalidField'))	{
+				//Flash red divs?
+			}
+			else	{
+				if(!loanApp.autoCalc)
+					$('.calculate').fadeOut(loanApp.config.fadeSpeed);
+				loanApp.calculate();			
+			}
+		}
+	};
+
+
+	
+
+	var resetEmptyEntry = function(uid,field,value)	{
+		if(field=='name')	{
+			if(value=='')	{
+				value = 'Loan '+(parseInt(uid)+1);
+				$('#loan'+field+uid).val(value);
+				$('#loan'+field+uid).css('color','#cccccc');
+			}
+			else
+				$('#loan'+field+uid).css('color','#444444');
+			loanApp.updateLoan(uid,field,value);
+		}
+	};
+
+	var formatNumber = function(s)	{
+		
+		s = s.replace(' ','');
+		s = s.replace(',','');
+		s = parseFloat(s);
+		return s;
+	};
+
+
+/*
+ * Calculate, Links, Tooltip buttons
+ */
 
 	$('.calculate').click(function ()	{
 		if($('input').hasClass('uninitialized'))	
@@ -237,46 +217,57 @@ $(function()	{
 			calculate(1);
 	});
 
-	var calculate = function(firstCall)	{
-		if(firstCall || loanApp.recalculate)	{
-			//If no invalidFields, calculate and set blank fields to default values
-			if($('input').hasClass('invalidField'))	{
-				//Flash red divs?
-			}
-			else	{
-				if(!loanApp.recalculate)
-					$('.calculate').fadeOut(loanApp.config.fadeSpeed);
-				loanApp.calculate();			
-			}
+	$('.link').click(function ()	{
+		if($(this).attr('id')=='link_help')	{
+			$('#help').show();
+			$('#about').hide();
+			$('#feedback').hide();
 		}
-	};
+		else if($(this).attr('id')=='link_about')	{
+			$('#help').hide();
+			$('#about').show();
+			$('#feedback').hide();
+		}
+		else if($(this).attr('id')=='link_feedback')	{
+			$('#help').hide();
+			$('#about').hide();
+			$('#feedback').show();
+		}
+	});
+
+	$('.linkClose').click(function ()	{
+		$('.moreInfo').hide()
+	});
+
+
+	$('.help').mouseover(function (e)	{
+		var x = e.pageX + 30;
+		var y = e.pageY - 20;
+		$('#helpPopup').css({left:x+'px',top:y+'px'});
+		
+		if($(this).attr('id')=='totalMonthlyPaymentHelp')
+			$('#help_tmp').show();
+		else if($(this).attr('id')=='paymentTypeHelp')
+			$('#help_pt').show();
+	});
+
+	$('.help').mouseout(function ()	{
+		if($(this).attr('id')=='totalMonthlyPaymentHelp')
+			$('#help_tmp').hide();
+		else if($(this).attr('id')=='paymentTypeHelp')
+			$('#help_pt').hide();
+	});
+
+
+
 
 	/*
 	 *	validate(s)
 	 */
 
-	var validate = function(s)	{
-		var validChars = "0123456789., ";
-		var validTest = true;
-		var char;
-		for(i=0;i<s.length && validTest==true;i++)	{
-			char = s.charAt(i);
-			//if(char=='.')
-			//	decimalCount++;
-			if(validChars.indexOf(char) == -1)
-				validTest = false;
-		}
-		if(s=='')
-			validTest = false;
-		return validTest;
-	};
+	
 
-	var numberFormat = function(s)	{
-		s = s.replace(' ','');
-		s = s.replace(',','');
-		s = parseFloat(s);
-		return s;	
-	};
+
 
 
 });

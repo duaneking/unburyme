@@ -12,11 +12,21 @@ J.LoanCalc.Loan	= function(uid, loanApp)	{
 	this.interest = 0;
 	this.results = new J.LoanCalc.ResultBar(this.uid, this, this.loanApp);
 	this.create();
-	this.initialized = 0;
+	this.isInitialized = {
+		'loan' : 0,
+		'name' : 0,
+		'balance' : 0,
+		'minPayment' : 0,
+		'interest' : 0
+	}
+	this.isValid = {
+		'loan' : 0,
+		'name' : 0,
+		'balance' : 0,
+		'minPayment' : 0,
+		'interest' : 0
+	}
 	this.deleted = 0;
-	this.initBalance = 0;
-	this.initMinPayment = 0;
-	this.initInterest = 0;
 };
 
 J.LoanCalc.Loan.prototype = {
@@ -27,23 +37,23 @@ J.LoanCalc.Loan.prototype = {
 	 */
 	create : function()	{
 		J.LoanCalc.debug('J.LoanCalc.Loan.create('+this.uid+') called');
-		var html = '<div id=\'loanBarInput'+this.uid+'\' class=\'loanBarInput uninitialized\'>\n';
+		var html = '<div id=\'loanbar'+this.uid+'\' class=\'loanBarInput uninitialized\'>\n';
 		html += '	<a href=\'#\' class=\'destroyLoan\' id=\'delete'+this.uid+'\'><div class=\'destroyLoanX\'></div></a>\n';
 		html += '	<div class=\'loanName\'>\n';
 		html += '	                <div class=\'fieldTitle\'>Loan Name</div>\n'
-		html += '	                <div class=\'fieldInput\'><input id=\'loanNameInput'+this.uid+'\' class=\'loanNameInput\' /></div>\n';
+		html += '	                <div class=\'fieldInput\'><input id=\'loanname'+this.uid+'\' class=\'name\' /></div>\n';
 		html += '	        </div>\n';
 	        html += '	<div class=\'currentBalance\'>\n';
 		html += '	                <div class=\'fieldTitle\'>Current Balance</div>\n';
-		html += '	                <div class=\'fieldInput\'>$<input id=\'loanBalanceInput'+this.uid+'\' class=\'loanBalanceInput  uninitialized\' /></div>\n';
+		html += '	                <div class=\'fieldInput\'>$<input id=\'loanbalance'+this.uid+'\' class=\'balance  uninitialized\' /></div>\n';
 		html += '	        </div>\n';
 		html += '	        <div class=\'minMonthlyPayment\'>\n';
 		html += '	                <div class=\'fieldTitle\'>Min. Payment</div>\n';
-		html += '	                <div class=\'fieldInput\'>$<input id=\'loanPaymentInput'+this.uid+'\' class=\'loanPaymentInput  uninitialized\' /></div>\n';
+		html += '	                <div class=\'fieldInput\'>$<input id=\'loanminPayment'+this.uid+'\' class=\'minPayment  uninitialized\' /></div>\n';
 		html += '	        </div>\n';
 		html += '	        <div class=\'interest\'>\n';
 		html += '	                <div class=\'fieldTitle\'>Interest</div>\n';
-		html += '	                <div class=\'fieldInput\'>%<input id=\'loanInterestInput'+this.uid+'\' class=\'loanInterestInput  uninitialized\' /></div>\n';
+		html += '	                <div class=\'fieldInput\'>%<input id=\'loaninterest'+this.uid+'\' class=\'interest  uninitialized\' /></div>\n';
 		html += '        </div>\n';
 		html += '		</div>\n';
 		
@@ -62,17 +72,14 @@ J.LoanCalc.Loan.prototype = {
 		});
 		this.results.destroy();
 		//Remove all uninitialization tags
-		this.cleanField('loanBarInput');
-		this.cleanField('loanNameInput');
-		this.cleanField('loanBalanceInput');
-		this.cleanField('loanPaymentInput');
-		this.cleanField('loanInterestInput');
-		this.initialized = 0;
+		this.cleanField('bar');
+		this.cleanField('name');
+		this.cleanField('balance');
+		this.cleanField('payment');
+		this.cleanField('interest');
 		this.deleted = 1;
-		this.initName = 0;
-		this.initBalance = 0;
-		this.initMinPayment = 0;
-		this.initInterest = 0;
+		for(var i=0;i<5;i++)		
+			this.isInitialized[i] = 0;
 	},
 
 	setName : function(name)	{
@@ -81,19 +88,19 @@ J.LoanCalc.Loan.prototype = {
 	
 	setBalance : function(balance)	{
 
-		this.initializeField('loanBalanceInput');
+		this.initializeField('balance');
 		this.balance = balance;
 	},
 	
 	setMinPayment : function(minPayment)	{
 
-		this.initializeField('loanPaymentInput');
+		this.initializeField('minPayment');
 		this.minPayment = minPayment;
 	},
 
 	setInterest : function(interest)	{
 
-		this.initializeField('loanInterestInput');
+		this.initializeField('interest');
 		this.interest = interest;
 	},
 
@@ -112,6 +119,25 @@ J.LoanCalc.Loan.prototype = {
 	getInterest : function()		{
 		return this.interest;
 	},
+	
+	getValue : function(field)	{
+		var value;
+		switch(field)	{
+			case 'name':
+				value = this.getName();
+				break;
+			case 'balance':
+				value = this.getBalance();
+				break;
+			case 'minPayment':
+				value = this.getMinPayment();
+				break;
+			case 'interest':
+				value = this.getInterest();
+				break;
+		}
+		return value;
+	},
 
 	getUID : function()	{
 		return this.uid;
@@ -121,34 +147,54 @@ J.LoanCalc.Loan.prototype = {
 		this.results.calculate();
 	},
 
+	validate : function(field,value)	{
+
+		var validChars = "0123456789., ",
+		validTest = true,
+		character;
+		for(i=0;i<value.length && validTest==true;i++)	{
+			character = value.charAt(i);
+			if(validChars.indexOf(character) == -1)
+				validTest = false;
+		}
+		if(value=='')	{
+			validTest = false;
+			$('input .'+field).removeClass('invalidField');
+			$('input .'+field).val('');
+		}
+
+		if(field=='name')
+			validTest = true;
+		
+		if(validTest)
+			this.isValid[field] = 1;
+		else
+			this.isValid[field] = 0;
+
+		if(this.isValid['balance'] && this.isValid['minPayment'] && this.isValid['interest'])
+			this.isValid['loan'] = 1;
+
+		return validTest;
+	},
+	
+
+
 	cleanField : function(field)	{
-		$('#'+field+this.uid).removeClass('uninitialized');
-		$('#'+field+this.uid).removeClass('invalidField');
+		$('#loan'+field+this.uid).removeClass('uninitialized');
+		$('#loan'+field+this.uid).removeClass('invalidField');
 	},
 
 
 	initializeField : function(field)	{
-
-		switch(field){
-			case 'loanBalanceInput':
-				this.initBalance = 1;
-				break;
-			case 'loanPaymentInput':
-				this.initMinPayment = 1;
-				break;
-			case 'loanInterestInput':
-				this.initInterest = 1;
-				break;
-		}
 		
+		this.isInitialized[field] = 1;
 		this.cleanField(field);
 
-		if(this.initBalance && this.initMinPayment && this.initInterest)	{
-			this.initialized = 1;
-			this.cleanField('loanBarInput');
+		if(this.isInitialized['balance'] && this.isInitialized['minPayment'] && this.isInitialized['interest'])	{
+			this.isInitialized['bar'] = 1;
+			this.cleanField('bar');
 		}
 
-		
 	}
 
 };

@@ -18,7 +18,7 @@ J.LoanCalc.LoanApp = function()	{
 	this.paymentType = 'avalanche';
 	this.totalPayment = 0;
 	this.totalMinPayment = 0;
-	this.recalculate = 0;
+	this.autoCalc = 0;
 
 	//Result variables
 	this.extraPayment;
@@ -72,7 +72,7 @@ J.LoanCalc.LoanApp = function()	{
 		this.loanArray.splice(this.getLoanIndex(uid),1);
 		this.loanCount--;
 		this.refreshInitLoanArray();
-		if(this.recalculate==1 && !this.initLoanCount())	{
+		if(this.autoCalc==1 && !this.initLoanCount())	{
 			this.clearData();
 			this.refreshInitLoanArray();
 			$('.calculate').fadeIn(loanApp.config.fadeSpeed);
@@ -152,7 +152,7 @@ J.LoanCalc.LoanApp = function()	{
 		this.graph.draw();
 		this.totalResults.calculate();
 
-		this.recalculate = 1;
+		this.autoCalc = 1;
 	}
 	
 	
@@ -311,7 +311,7 @@ J.LoanCalc.LoanApp = function()	{
 	//Used when users delete the last valid loan
 	this.clearData = function()	{
 
-		this.recalculate = 0;
+		this.autoCalc = 0;
 		this.rolloverMonth.setCurrent();
 		this.graph.reset();
 		this.totalResults.reset();
