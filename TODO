@@ -1,4 +1,5 @@
 Functionality
+	****Put Slider INPUT on similar function as other INPUT
 	***Cap ridiculous calls/ infinity loops* (See if progress is made)
 	***Check for if first princPaid < 0.01 (goes negative, breaks)
 	***if(princPaid>payment) -> invalidate

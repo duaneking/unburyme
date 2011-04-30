@@ -80,7 +80,7 @@ J.LoanCalc.LoanApp = function()	{
 	};
 
 	this.updateLoan = function(uid, field, value)	{
-
+		J.LoanCalc.debug('Updating Loan '+uid);
 		switch(field)	{
 			case 'name':
 				this.getLoan(uid).setName(value);
@@ -302,7 +302,7 @@ J.LoanCalc.LoanApp = function()	{
 	this.refreshInitLoanArray = function()	{
 		this.initLoanArray = [];
 		for(var i=0;i<this.loanCount;i++)	{
-			if(this.loanArray[i].initialized && !this.loanArray[i].deleted)
+			if(this.loanArray[i].isInitialized['loan'] && !this.loanArray[i].deleted)
 				this.initLoanArray.push(this.loanArray[i]);
 		}
 

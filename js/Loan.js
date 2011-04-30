@@ -148,7 +148,6 @@ J.LoanCalc.Loan.prototype = {
 	},
 
 	validate : function(field,value)	{
-
 		var validChars = "0123456789., ",
 		validTest = true,
 		character;
@@ -166,33 +165,37 @@ J.LoanCalc.Loan.prototype = {
 		if(field=='name')
 			validTest = true;
 		
-		if(validTest)
+		if(validTest)	{
 			this.isValid[field] = 1;
-		else
+			$('input .'+field).removeClass('invalidField');
+		}
+		else	{
 			this.isValid[field] = 0;
+			$('input .'+field).addClass('invalidField');
+		}
 
 		if(this.isValid['balance'] && this.isValid['minPayment'] && this.isValid['interest'])
 			this.isValid['loan'] = 1;
-
 		return validTest;
 	},
 	
 
 
 	cleanField : function(field)	{
+		if(field=='loan')
+			field = 'bar';
 		$('#loan'+field+this.uid).removeClass('uninitialized');
 		$('#loan'+field+this.uid).removeClass('invalidField');
 	},
 
 
 	initializeField : function(field)	{
-		
 		this.isInitialized[field] = 1;
 		this.cleanField(field);
 
 		if(this.isInitialized['balance'] && this.isInitialized['minPayment'] && this.isInitialized['interest'])	{
-			this.isInitialized['bar'] = 1;
-			this.cleanField('bar');
+			this.isInitialized['loan'] = 1;
+			this.cleanField('loan');
 		}
 
 	}

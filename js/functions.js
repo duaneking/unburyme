@@ -122,45 +122,40 @@ $(function()	{
 		var uid;
 		var field;
 		var value = $(this).val();
-		alert("!");
-		// Set uid, field
+
+		// Setting input
+
 		if($(this).hasClass('name'))	{
-			uid = $(this).attr('id').substr(13);
+			uid = $(this).attr('id').substr(8);
 			field = 'name';
 		}
 		else if($(this).hasClass('balance'))	{
-			uid = $(this).attr('id').substr(16);
+			uid = $(this).attr('id').substr(11);
 			field = 'balance';
 		}
 		else if($(this).hasClass('minPayment'))	{
-			uid = $(this).attr('id').substr(16);
+			uid = $(this).attr('id').substr(14);
 			field = 'minPayment';
 		}
 		else if($(this).hasClass('interest'))	{
-			uid = $(this).attr('id').substr(17);
+			uid = $(this).attr('id').substr(12);
 			field = 'interest';
 		}
 		
 
+		// Validate input
 		if(loanApp.getLoan(uid).validate(field,value))	{
-
 			loanApp.updateLoan(uid,field,formatNumber(value));
 			if(field=='minPayment')
 				$('#paymentSlider').slider('option','value',logPaymentToPosition(loanApp.totalPayment));
 		
 		}
-
-		else if(!$(this).hasClass('invalidField'))	{
-			$(this).addClass('invalidField');
-			if(value=='')
-				$(this).val('')
-		}
-		
+		J.LoanCalc.debug(loanApp.loanArray);	
 		resetEmptyEntry(uid,field,value);
 		
 		//If it's an initialized loan, attempt to recalculate
 		//and make all uninitialized inputs invalid
-		if(!$('#loanbar'+uid).hasClass('uninitialized') && loanApp.autoCalc)	{
+		if(loanApp.getLoan(uid).isInitialized['loan'] && loanApp.autoCalc)	{
 			$('input.uninitialized').addClass('invalidField');
 			calculate();
 		}
