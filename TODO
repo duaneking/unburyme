@@ -1,5 +1,4 @@
 Functionality
-	****Put Slider INPUT on similar function as other INPUT
 	***Cap ridiculous calls/ infinity loops* (See if progress is made)
 	***Check for if first princPaid < 0.01 (goes negative, breaks)
 	***if(princPaid>payment) -> invalidate
@@ -13,8 +12,6 @@ Visual
 	*Header information
 
 UX
-	**Deleting a field and then immediately sliding the slider, the event to update (and
-		subsequently invalidate) the field never fires
 	*Change focus on tab/enter
 	*Tab goes to 'add tab' after interest of previous loan
 	*Remove snowfall/avalanche buttons from focus list

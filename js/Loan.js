@@ -67,17 +67,20 @@ J.LoanCalc.Loan.prototype = {
 	 */
 	destroy : function()	{
 		J.LoanCalc.debug('Destroying loan: '+this.uid);
-		$('#loanBarInput'+this.uid).slideUp(this.loanApp.config.slideSpeed, function(){
-			$('#loanBarInput'+this.uid).remove();
+		$('#loanbar'+this.uid).slideUp(this.loanApp.config.slideSpeed, function(){
+			$('#loanbar'+this.uid).remove();
 		});
 		this.results.destroy();
 		//Remove all uninitialization tags
 		this.cleanField('bar');
 		this.cleanField('name');
 		this.cleanField('balance');
-		this.cleanField('payment');
+		this.cleanField('minPayment');
 		this.cleanField('interest');
+    
+        // Should be removed from array; sanity check
 		this.deleted = 1;
+
 		for(var i=0;i<5;i++)		
 			this.isInitialized[i] = 0;
 	},
@@ -158,27 +161,34 @@ J.LoanCalc.Loan.prototype = {
 		}
 		if(value=='')	{
 			validTest = false;
-			$('input .'+field).removeClass('invalidField');
 			$('input .'+field).val('');
 		}
 
 		if(field=='name')
 			validTest = true;
 		
-		if(validTest)	{
+		if(validTest)
 			this.isValid[field] = 1;
-			$('input .'+field).removeClass('invalidField');
-		}
-		else	{
+		else	
 			this.isValid[field] = 0;
-			$('input .'+field).addClass('invalidField');
-		}
 
 		if(this.isValid['balance'] && this.isValid['minPayment'] && this.isValid['interest'])
 			this.isValid['loan'] = 1;
+
+        // Call validateDisplay to handle visual representation
+        this.validateDisplay(field,validTest);
+        J.LoanCalc.debug(field+': '+validTest);
 		return validTest;
 	},
+
 	
+    validateDisplay : function(field,isFieldValid)  {
+
+        if(isFieldValid)
+            $('#loan'+field+this.uid).removeClass('invalidField');
+        else
+            $('#loan'+field+this.uid).addClass('invalidField');
+    },
 
 
 	cleanField : function(field)	{

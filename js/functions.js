@@ -108,15 +108,16 @@ $(function()	{
  * Events
  */
 
-//else need TOTALMONTHLYPAYMENT INPUT
-/*
 
-			if(field=='totalMonthlyPayment')	{
-				loanApp.updatePayment(value);
-					$('#paymentSlider').slider('option','value',logPaymentToPosition(value));				
-				}
+	$('#totalMonthlyPayment').live('change', function()	{
+        var value = $(this).val();
+	    if(loanApp.validatePayment(value))   {
+            loanApp.updatePayment(value);
+    		$('#paymentSlider').slider('option','value',logPaymentToPosition(value));
+            calculate();	
+        }
+    });
 
-*/
 	$('#loanBarInputContainer input').live('change', function()	{
 
 		var uid;
@@ -145,6 +146,7 @@ $(function()	{
 
 		// Validate input
 		if(loanApp.getLoan(uid).validate(field,value))	{
+            J.LoanCalc.debug('Apparently this loan is valid.');
 			loanApp.updateLoan(uid,field,formatNumber(value));
 			if(field=='minPayment')
 				$('#paymentSlider').slider('option','value',logPaymentToPosition(loanApp.totalPayment));
@@ -162,17 +164,14 @@ $(function()	{
 	});
 
 
-	var calculate = function(firstCall)	{
-		if(firstCall || loanApp.autoCalc)	{
+    var calculate = function(firstCall)	{
+		
+        if(firstCall || loanApp.autoCalc)	{
 			//If no invalidFields, calculate and set blank fields to default values
 			if($('input').hasClass('invalidField'))	{
-				//Flash red divs?
+				//TODO Flash red divs?
 			}
-			else	{
-				if(!loanApp.autoCalc)
-					$('.calculate').fadeOut(loanApp.config.fadeSpeed);
-				loanApp.calculate();			
-			}
+			loanApp.calculatePrep();			
 		}
 	};
 
@@ -252,18 +251,6 @@ $(function()	{
 		else if($(this).attr('id')=='paymentTypeHelp')
 			$('#help_pt').hide();
 	});
-
-
-
-
-	/*
-	 *	validate(s)
-	 */
-
-	
-
-
-
 
 });
 

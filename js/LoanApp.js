@@ -18,6 +18,7 @@ J.LoanCalc.LoanApp = function()	{
 	this.paymentType = 'avalanche';
 	this.totalPayment = 0;
 	this.totalMinPayment = 0;
+    this.validPayment = 0;
 	this.autoCalc = 0;
 
 	//Result variables
@@ -72,10 +73,10 @@ J.LoanCalc.LoanApp = function()	{
 		this.loanArray.splice(this.getLoanIndex(uid),1);
 		this.loanCount--;
 		this.refreshInitLoanArray();
-		if(this.autoCalc==1 && !this.initLoanCount())	{
+    
+        // If this is the last loan, reveal Calculate button and create new loan
+		if(this.autoCalc==1 && this.initLoanCount()==0)	{
 			this.clearData();
-			this.refreshInitLoanArray();
-			$('.calculate').fadeIn(loanApp.config.fadeSpeed);
 		}
 	};
 
@@ -109,7 +110,8 @@ J.LoanCalc.LoanApp = function()	{
 		if(this.totalMinPayment > this.totalPayment)	{
 			this.totalPayment = this.totalMinPayment;
 			$('#totalMonthlyPayment').val(this.totalPayment);
-			$('#totalMonthlyPayment').removeClass('invalidField');			
+			$('#totalMonthlyPayment').removeClass('invalidField');
+            this.validPayment = true;	
 		}
 		J.LoanCalc.debug('TotalMinPayment: '+this.totalMinPayment);
 	};
@@ -118,7 +120,52 @@ J.LoanCalc.LoanApp = function()	{
 		this.totalPayment = value;
 		//Check to see if the new payment is lower than the minimum.. if so, increase.
 		this.updateTotalMinPayment(); 
+        this.validPayment = true;
+        this.validatePaymentDisplay(true);
 	};
+    
+    this.validatePayment = function(value)  {
+
+        var validChars = "0123456789., ",                                                                                   
+        validTest = true,                                                                                                   
+        character;                                                                                                          
+        for(i=0;i<value.length && validTest==true;i++)  {                                                                   
+            character = value.charAt(i);                                                                                    
+            if(validChars.indexOf(character) == -1)                                                                         
+                validTest = false;                                                                                          
+        }
+        if(value=='')
+            validTest = false;      
+
+        this.validatePaymentDisplay(validTest);
+
+        if(validTest)
+            this.validPayment = true;
+        else
+            this.validPayment = false;
+ 
+        return validTest;
+        
+    };
+
+
+
+    this.validatePaymentDisplay = function(valid)   {
+        
+        if(valid)
+            $('#totalMonthlyPayment').removeClass('invalidField');
+        else
+            $('#totalMonthlyPayment').addClass('invalidField');
+    };
+    
+
+
+    this.isPaymentValid = function(value)   {
+
+        return this.validPayment;
+    };
+
+
 
 	this.getInfo = function(uid, field)	{
 		
@@ -136,27 +183,38 @@ J.LoanCalc.LoanApp = function()	{
 				return this.getLoan(uid).getInterest();
 				break;
 		}		
-	}
+	};
 
-	this.calculate = function()	{
+	this.calculatePrep = function()	{
 		
 		J.LoanCalc.debug('Calculating...');
-		//Resort and reset
-		var monthlyPayment = $('#totalMonthlyPayment').val();
-		var sortedLoans = this.sortLoans();
-		this.extraPayment = this.totalPayment - this.totalMinPayment;
-		this.rollover = 0;
-		this.rolloverMonth = new J.LoanCalc.Date();
+        
+        if(this.areLoansValid() && this.isPaymentValid())    {
+    	    // Resort and reset
+        	var monthlyPayment = $('#totalMonthlyPayment').val();
+    		var sortedLoans = this.sortLoans();
+    		this.extraPayment = this.totalPayment - this.totalMinPayment;
+    		this.rollover = 0;
+    		this.rolloverMonth = new J.LoanCalc.Date();
+    
+            // Calculate, draw graph and results
+    		this.calculate(sortedLoans);
+    		this.graph.draw();
+    		this.totalResults.calculate();
+    
+            // Hide Calculate button
+            if(!this.autoCalc)                                                                                   
+                $('.calculate').fadeOut(J.LoanCalc.Config.fadeSpeed);
 
-		this.calcResults(sortedLoans);
-		this.graph.draw();
-		this.totalResults.calculate();
-
-		this.autoCalc = 1;
-	}
+            // After first calculate, autocalculate subsequently if able
+            this.autoCalc = 1; 
+        }
+        else
+            J.LoanCalc.debug('nope, not calculating');
+	};
 	
 	
-	this.calcResults = function(sortedLoans)	{
+	this.calculate = function(sortedLoans)	{
 		var currentMonth = new J.LoanCalc.Date(),
 		    calcName = [],
 		    calcBalance = [],
@@ -293,11 +351,11 @@ J.LoanCalc.LoanApp = function()	{
 			return sortedArray;
 		else
 			return sortedArray.reverse();	
-	}
+	};
 
 	this.initLoanCount = function()	{
 		return this.initLoanArray.length;
-	}
+	};
 	
 	this.refreshInitLoanArray = function()	{
 		this.initLoanArray = [];
@@ -306,7 +364,7 @@ J.LoanCalc.LoanApp = function()	{
 				this.initLoanArray.push(this.loanArray[i]);
 		}
 
-	}
+	};
 
 	//Used when users delete the last valid loan
 	this.clearData = function()	{
@@ -315,6 +373,19 @@ J.LoanCalc.LoanApp = function()	{
 		this.rolloverMonth.setCurrent();
 		this.graph.reset();
 		this.totalResults.reset();
-	}
+        this.refreshInitLoanArray();                                                                                    
+        $('.calculate').fadeIn(J.LoanCalc.Config.fadeSpeed);                                                            
+        this.createLoan();     
+	};
+
+    this.areLoansValid = function() {
+      
+        var areLoansValid = true;
+        for(var i=0;i<this.loanCount;i++)   {
+            if(!this.loanArray[i].isValid['loan'])
+                areLoansValid = false;
+        }
+        return areLoansValid;
+    };
 
 };
