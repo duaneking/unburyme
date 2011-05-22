@@ -393,8 +393,8 @@ J.LoanCalc.LoanApp = function()	{
 
         if($('#error').length == 0) {
             var html = '<div id=\'error\'>\n';
-            html +=    '    <p>One or more of the current loans will take centuries to complete.</p>';
-            html +=    '    <p>Please try more reasonable loan information.</p>';
+            html +=    '    <p>One or more of the current loans will take <strong>centuries</strong> to pay off.</p>';
+            html +=    '    <p>Please use more reasonable loan information.</p>';
             html +=    '</div>';
             $('#enclosure').prepend(html);
             $('#error').css('display', 'none');
