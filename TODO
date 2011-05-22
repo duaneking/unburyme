@@ -1,12 +1,6 @@
 Functionality
-	{ NEEDS TESTING 
-        ***Cap ridiculous calls/ infinity loops* (See if progress is made)
-    	***Check for if first princPaid < 0.01 (goes negative, breaks)
-    	***if(princPaid>payment) -> invalidate
-    }
 	*Tutorial
 Visual
-	**check diff versions of FF/IE/Chrome/Safari**
 	*Work on month readout
 	*Show only months in graph if < year
 	*Header information
@@ -21,4 +15,4 @@ Refactoring
 	*Change snowfall->snowball in code
 
 Administrative
-	*License	
+	*Add license content to js	
