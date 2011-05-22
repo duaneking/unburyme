@@ -58,7 +58,7 @@ J.LoanCalc.Loan.prototype = {
 		html += '		</div>\n';
 		
 		$('#loanBarInputContainer').append(html);
-		$('#loanBarInput'+this.uid).css('display','none').slideDown(this.loanApp.config.slideSpeed);
+		$('#loanbar'+this.uid).css('display','none').slideDown(this.loanApp.config.slideSpeed);
 	},
 
 	/*

@@ -27,7 +27,6 @@ J.LoanCalc.ResultBar.prototype = {
 	},
 
 	destroy : function()	{
-		J.LoanCalc.debug('Destroying resultbar: '+this.uid);
 		$('#resultsContainer'+this.uid).slideUp(this.loanApp.config.slideSpeed, function(){
 			$('#resultsContainer'+this.uid).remove();
 		});		
@@ -82,7 +81,6 @@ J.LoanCalc.ResultBar.prototype = {
 		this.htmlMain += '	</div>\n';
 		this.htmlMain += this.htmlMonthly;
 		this.htmlMain += '</a>\n';
-		J.LoanCalc.debug($('#resultBar'+this.uid).length);		
 
 		//Create #resultBar if it doesn't exist
 		if($('#resultBar'+this.uid).length)	{
@@ -91,7 +89,6 @@ J.LoanCalc.ResultBar.prototype = {
 			$('#monthlyResults'+this.uid).css('display','none');			
 		}	
 		else	{
-			J.LoanCalc.debug('#results'+this.uid+' length 0');
 			this.htmlMain = '<div class=\'resultsContainer\' id=\'resultsContainer'+this.uid+'\'>\n'+this.htmlMain+'</div>\n';
 			$('#allResultsContainer').append(this.htmlMain).fadeIn(this.loanApp.config.fadeSpeed);
 			$('#monthlyResults'+this.uid).css('display','none');

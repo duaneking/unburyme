@@ -42,15 +42,15 @@ J.LoanCalc.Date.prototype = {
 	getLatest : function(otherDate)	{
 		var latestDate = new J.LoanCalc.Date();
 		if(this.getYear() > otherDate.getYear())
-			latestDate = this;
+			latestDate.setDate(this.getYear(), this.getMonth());
 		else if(this.getYear() < otherDate.getYear())
-			latestDate = otherDate;
+			latestDate.setDate(otherDate.getYear(), otherDate.getMonth());
 		else if(this.getMonth() > otherDate.getMonth())
-			latestDate = this;
+			latestDate.setDate(this.getYear(), this.getMonth());
 		else if(this.getMonth() < otherDate.getMonth())
-			latestDate = otherDate;
+			latestDate.setDate(otherDate.getYear(), otherDate.getMonth());
 		else
-			latestDate = this; //They are equal
+			latestDate.setDate(this.getYear(), this.getMonth()); //They are equal
 		return latestDate;
 	},
 

@@ -229,9 +229,15 @@ $(function()	{
 		}
 	});
 
-	$('.linkClose').click(function ()	{
+/*	$('.linkClose').click(function ()	{
 		$('.moreInfo').hide()
 	});
+*/
+    $('body').click(function (e)    {
+        var target = $(e.target);
+        if(!target.hasClass('link'))
+            $('.moreInfo').hide();
+    });
 
 
 	$('.help').mouseover(function (e)	{

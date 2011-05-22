@@ -19,7 +19,10 @@ J.LoanCalc.LoanApp = function()	{
 	this.totalPayment = 0;
 	this.totalMinPayment = 0;
     this.validPayment = 0;
+    this.possibleCalc = 1;
 	this.autoCalc = 0;
+    this.errorTimeout = 0;
+
 
 	//Result variables
 	this.extraPayment;
@@ -184,8 +187,9 @@ J.LoanCalc.LoanApp = function()	{
 				break;
 		}		
 	};
+	
 
-	this.calculatePrep = function()	{
+    this.calculatePrep = function()	{
 		
 		J.LoanCalc.debug('Calculating...');
         
@@ -198,19 +202,23 @@ J.LoanCalc.LoanApp = function()	{
     		this.rolloverMonth = new J.LoanCalc.Date();
     
             // Calculate, draw graph and results
+            this.possibleCalc = true;
     		this.calculate(sortedLoans);
-    		this.graph.draw();
-    		this.totalResults.calculate();
+            if(this.possibleCalc == true)  {
+        		this.graph.draw();
+        		this.totalResults.calculate();
     
-            // Hide Calculate button
-            if(!this.autoCalc)                                                                                   
-                $('.calculate').fadeOut(J.LoanCalc.Config.fadeSpeed);
-
-            // After first calculate, autocalculate subsequently if able
-            this.autoCalc = 1; 
+                // Hide Calculate button
+                if(!this.autoCalc)                                                                                   
+                    $('.calculate').fadeOut(J.LoanCalc.Config.fadeSpeed);
+    
+                // After first calculate, autocalculate subsequently if able
+                this.autoCalc = 1; 
+            }
         }
         else
             J.LoanCalc.debug('nope, not calculating');
+        
 	};
 	
 	
@@ -226,9 +234,8 @@ J.LoanCalc.LoanApp = function()	{
 		    finishedCalculating = [],
 		    remainingLoans = this.initLoanCount();
 
-		//Initialize and draw
+		// Initialize and draw
 		for(var i=0;i<this.initLoanCount();i++)	{
-			J.LoanCalc.debug('Initializing: '+sortedLoans[i].uid);
 
 			sortedLoans[i].results.totalInterestPaid = 0;
 			sortedLoans[i].results.drawStart();
@@ -240,8 +247,7 @@ J.LoanCalc.LoanApp = function()	{
 		}
 
 		var iterator = 0;
-		while(remainingLoans)	{
-			J.LoanCalc.debug('remainingLoans: '+remainingLoans);
+		while(remainingLoans && this.possibleCalc)	{
 			var focusPayment = this.totalPayment;
 			var firstPaymentPass = true;
 			//Set monthly payments
@@ -255,11 +261,9 @@ J.LoanCalc.LoanApp = function()	{
 				}
 			}
 
-			//Loops to ensure all focus payment is distributed
+			// Loops to ensure all focus payment is distributed
 			while((focusPayment>0 || firstPaymentPass) && remainingLoans)	{
-//				J.LoanCalc.debug('Focus Payment: '+focusPayment);
-//				J.LoanCalc.debug('first Pass: '+firstPaymentPass);
-				//Give rollover/focus money to priority loans
+				// Give rollover/focus money to priority loans
 				for(var i=0;i<this.initLoanCount();i++)	{
 					if(focusPayment > 0 && calcBalance[i] > 0)	{
 						calcMonthlyPayment[i] += focusPayment;
@@ -267,12 +271,9 @@ J.LoanCalc.LoanApp = function()	{
 					}
 				}
 	
-				//Payment pass
+				// Payment pass
 				for(var i=0;i<this.initLoanCount();i++)	{
-//					J.LoanCalc.debug(calcBalance[i]);
 					if(calcBalance[i] > 0)	{
-					J.LoanCalc.debug('calcBalance[i] '+calcBalance[i]);
-					J.LoanCalc.debug('monthly - interst '+(calcMonthlyPayment[i] - calcInterestPaid[i]));
 						if(calcMonthlyPayment[i] - calcInterestPaid[i] < calcBalance[i])	{
 							calcPrincPaid[i] = calcMonthlyPayment[i] - calcInterestPaid[i];
 							calcBalance[i] -= calcPrincPaid[i];
@@ -283,17 +284,16 @@ J.LoanCalc.LoanApp = function()	{
 							calcMonthlyPayment[i] = calcBalance[i] + calcInterestPaid[i];
 							calcBalance[i] = 0;
 							remainingLoans -= 1;
-							J.LoanCalc.debug('decrement loans'+iterator);
 							sortedLoans[i].results.payOffDate.setDate(currentMonth.getYear(),currentMonth.getMonth());	
 						}
 					}
 				}
 				firstPaymentPass = false;
 
-			} //while ((focusPayment>0 || firstPaymentPass) && remainingLoans)
+			} // while ((focusPayment>0 || firstPaymentPass) && remainingLoans)
 
 
-			//Send monthly results to ResultBar
+			// Send monthly results to ResultBar
 			for(var i=0;i<this.initLoanCount();i++)	{
 				if(finishedCalculating[i]==0)	{
 					if(calcBalance[i]==0)
@@ -303,21 +303,30 @@ J.LoanCalc.LoanApp = function()	{
 			}
 			currentMonth.increment();
 			iterator++;
+            
+            // Check to see current date is < year 2200 to prevent ridiculous calls
+            if(currentMonth.getYear() > 2200)
+                this.possibleCalc = false;
 
-		}//while(remainingLoans)
+		}// while(remainingLoans)
 
-		//Draw final
-		for(var i=0;i<this.initLoanCount();i++)	{
-			sortedLoans[i].results.drawFinal();
-		}
+        if(this.possibleCalc)    {
 
-		//Move around the divs
-		for(var l=0;l<this.initLoanCount();l++)	{
-			if(l==0)
-				$('#allResultsContainer').prepend($('#resultsContainer'+sortedLoans[l].getUID()));
-			else
-				$('#resultsContainer'+sortedLoans[l].getUID()).insertAfter($('#resultsContainer'+sortedLoans[l-1].getUID()));
-		}
+    		// Draw final
+    		for(var i=0;i<this.initLoanCount();i++)	{
+    			sortedLoans[i].results.drawFinal();
+    		}
+    
+    		//Move around the divs
+    		for(var l=0;l<this.initLoanCount();l++)	{
+    			if(l==0)
+    				$('#allResultsContainer').prepend($('#resultsContainer'+sortedLoans[l].getUID()));
+    			else
+    				$('#resultsContainer'+sortedLoans[l].getUID()).insertAfter($('#resultsContainer'+sortedLoans[l-1].getUID()));
+    		}
+        }
+        else
+            this.impossibleCalcDisplay();
 	};
 
 
@@ -377,6 +386,30 @@ J.LoanCalc.LoanApp = function()	{
         $('.calculate').fadeIn(J.LoanCalc.Config.fadeSpeed);                                                            
         this.createLoan();     
 	};
+
+
+    this.impossibleCalcDisplay = function() {
+        var slideSpeed = this.config.slideSpeed;
+
+        if($('#error').length == 0) {
+            var html = '<div id=\'error\'>\n';
+            html +=    '    <p>One or more of the current loans will take centuries to complete.</p>';
+            html +=    '    <p>Please try more reasonable loan information.</p>';
+            html +=    '</div>';
+            $('#enclosure').prepend(html);
+            $('#error').css('display', 'none');
+        }
+
+        $('#error').slideDown(this.config.slideSpeed);
+        if(this.errorTimeout)
+            window.clearTimeout(this.errorTimeout);
+        this.errorTimeout = window.setTimeout(function()    {
+            $('#error').slideUp(slideSpeed);
+        }, 3000);
+                    
+        
+            
+    };
 
     this.areLoansValid = function() {
       
