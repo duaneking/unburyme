@@ -10,13 +10,13 @@ $(function()	{
 	$(".paymentTypeButtonLink").click(function ()	{
 		if($(this).is('.avaLink'))	{
 			$('#avalanche').removeClass('unselectedPaymentType').addClass('selectedPaymentType');
-			$('#snowfall').removeClass('selectedPaymentType').addClass('unselectedPaymentType');
+			$('#snowball').removeClass('selectedPaymentType').addClass('unselectedPaymentType');
 		loanApp.paymentType = 'avalanche';
 		}
 		else	{
-			$('#snowfall').removeClass('unselectedPaymentType').addClass('selectedPaymentType');
+			$('#snowball').removeClass('unselectedPaymentType').addClass('selectedPaymentType');
                         $('#avalanche').removeClass('selectedPaymentType').addClass('unselectedPaymentType');
-		loanApp.paymentType = 'snowfall';
+		loanApp.paymentType = 'snowball';
 		}
 		calculate();
 		

@@ -40,6 +40,7 @@ body	{
 }
 
 
+
 #controlBar	{
 	position: relative;
 	left: 48px;
@@ -159,7 +160,7 @@ h2	{
 	cursor: pointer;
 }
 
-#snowfall	{
+#snowball	{
 	left: 120px;
 }
 
@@ -511,16 +512,23 @@ tr.alternateRows1	{
     color: #fff;
 }
 
-#info	{
+#info, #footerInfo	{
 	float: right;
-	top: 5px;
 	left: 600px;
-	margin: 5px;
 	font-size: 11px;
 	color: #19d7f5;
 }
 
-#info a, .link, .linkClose, .moreInfo a, .helpContent a	{
+#info   {
+    top: 5px;
+    margin: 5px;
+}
+
+#footerInfo {
+    margin: 75px 5px 5px 5px;
+}
+
+#info a, .link, .linkClose, .moreInfo a, .helpContent a, #footerInfo a	{
 	text-decoration: underline;
 	color: #19d7f5;
 	cursor: pointer;

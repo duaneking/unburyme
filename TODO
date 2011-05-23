@@ -1,8 +1,8 @@
 Functionality
 	*Tutorial
+
 Visual
 	*Work on month readout
-	*Show only months in graph if < year
 	*Header information
 
 UX
@@ -10,9 +10,6 @@ UX
 	*Tab goes to 'add tab' after interest of previous loan
 	*Remove snowfall/avalanche buttons from focus list
 	*Upon new loan, put focus on loan name
-
-Refactoring
-	*Change snowfall->snowball in code
 
 Administrative
 	*Add license content to js	

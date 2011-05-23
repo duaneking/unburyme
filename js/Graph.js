@@ -24,7 +24,6 @@ J.LoanCalc.Graph = function(loanApp)	{
 		this.makeDataSet();
 		this.makeXAxis();
 		this.lastFieldGraphed = field;
-
 		$.plot($('#graph'), this.loanDataSet, {
 			colors: this.colorSet,
 			xaxis: {
@@ -75,8 +74,10 @@ J.LoanCalc.Graph = function(loanApp)	{
 		date.setCurrent();
 		var month = date.getMonth();
 		var year = date.getYear()+1;
+        var monthMod = 1;
+        var yearMod = 1;
+
 		var untilNewYear = (12 - month)%12;
-		this.dateSet.push(0);
 		
 		//Find which data set is the largest
 		var maxData = 0;
@@ -85,13 +86,22 @@ J.LoanCalc.Graph = function(loanApp)	{
 				maxData = this.loanData[i].length;
 		}
 
+        // Convert entry point count to years        
+        var yearsToPay = Math.ceil(maxData / 12);
+
+        if(yearsToPay > 8) {
+            monthMod = Math.ceil(yearsToPay/8);
+            yearMod = Math.ceil(yearsToPay/8);
+        }
+            
+
 		//Make x-axis ticks
-		for(var i=0;i<maxData;i++)	{
+		for(var i=0;i<yearsToPay;i++)	{
 			var dataDict = [];
 			dataDict.push(untilNewYear);
-			dataDict.push(year+i);
+			dataDict.push(year+(i*yearMod));
 			this.dateSet.push(dataDict);
-			untilNewYear += 12;
+			untilNewYear += (12 * monthMod);
 		}
 	};
 
