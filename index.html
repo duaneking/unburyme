@@ -1,24 +1,26 @@
-<html>
-<head>
-<title>unbury.me : a loan calculator to become debt free</title>
-<link rel='stylesheet' type='text/css' href='css/main.css' media='screen' />
-<link rel='stylesheet' type='text/css' href='css/jquery-ui-1.8.11.custom.css' media='screen' />
-<script type='text/javascript' src='lib/jquery-1.5.2.js'></script>
-<!--<script type='text/javascript' src='lib/jquery-1.5.2.min.js'></script>-->
-<script type='text/javascript' src='lib/jquery-ui-1.8.11.custom.min.js'></script>
-<script type='text/javascript' src='js/LoanApp.js'></script>
-<script type='text/javascript' src='js/Config.js'></script>
-<script type='text/javascript' src='js/Loan.js'></script>
-<script type='text/javascript' src='js/ResultBar.js'></script>
-<script type='text/javascript' src='js/Date.js'></script>
-<script type='text/javascript' src='js/functions.js'></script>
-<script type='text/javascript' src='js/Graph.js'></script>
-<script type='text/javascript' src='js/TotalResults.js'></script>
-<script type='text/javascript' src='lib/flot/jquery.flot.js'></script>
-<!--[if lte IE 8]><script language="javascript" type="text/javascript" src="lib/flot/excanvas.min.js"></script><![endif]-->
-<link href='http://fonts.googleapis.com/css?family=Droid+Sans' rel='stylesheet' type='text/css'>
-<link href='http://fonts.googleapis.com/css?family=Ubuntu' rel='stylesheet' type='text/css'>
-<script type="text/javascript">
+<html xmlns='http://www.w3.org/1999/xhtml' xml:lang='en'>
+    <head>
+    <title>unbury.me : a loan calculator to become debt free</title>
+    <meta http-equiv='content-type' content='application/xhtml+xml; charset=utf-8' />
+    <meta name='description' content='unbury.me is an application that calculates payment plans based off of loan information to become debt free.' />
+    <meta name='keywords' content='loan, loan calculator, debt free, web application, personal finance, jordan santell, jquery' />
+    <link rel='stylesheet' type='text/css' href='css/main.css' media='screen' />
+    <link rel='stylesheet' type='text/css' href='css/jquery-ui-1.8.11.custom.css' media='screen' />
+    <script type='text/javascript' src='lib/jquery-1.5.2.min.js'></script>
+    <script type='text/javascript' src='lib/jquery-ui-1.8.11.custom.min.js'></script>
+    <script type='text/javascript' src='js/LoanApp.js'></script>
+    <script type='text/javascript' src='js/Config.js'></script>
+    <script type='text/javascript' src='js/Loan.js'></script>
+    <script type='text/javascript' src='js/ResultBar.js'></script>
+    <script type='text/javascript' src='js/Date.js'></script>
+    <script type='text/javascript' src='js/functions.js'></script>
+    <script type='text/javascript' src='js/Graph.js'></script>
+    <script type='text/javascript' src='js/TotalResults.js'></script>
+    <script type='text/javascript' src='lib/flot/jquery.flot.js'></script>
+    <!--[if lte IE 8]><script language="javascript" type="text/javascript" src="lib/flot/excanvas.min.js"></script><![endif]-->
+    <link href='http://fonts.googleapis.com/css?family=Droid+Sans' rel='stylesheet' type='text/css'>
+    <link href='http://fonts.googleapis.com/css?family=Ubuntu' rel='stylesheet' type='text/css'>
+    <script type="text/javascript">
 
   var _gaq = _gaq || [];
   _gaq.push(['_setAccount', 'UA-23780309-1']);
@@ -30,7 +32,7 @@
     var s = document.getElementsByTagName('script')[0]; s.parentNode.insertBefore(ga, s);
   })();
 
-</script>
+    </script>
 </head>
 
 <body>
@@ -47,7 +49,7 @@
 <strong>unbury.me</strong> is a loan calculater created by <a href='http://www.jsantell.com' target='_new' title='jsantell.com'>Jordan Santell</a>.</p>
 <p>Source code for the project may be obtained at <a href="https://github.com/jsantell/unburyme">github</a> and is licensed under the <a href="http://www.opensource.org/licenses/mit-license.php">MIT License</a>.</p>
 
-<p>If you have any comments, questions or feedback, let me know <a href='http://www.twitter.com/jsantell' title='JSantell on Twitter'>@jsantell</a>!</p>
+<p>If you have any comments, questions or feedback, let me know on Twitter <a href='http://www.twitter.com/jsantell' title='JSantell on Twitter'>@jsantell</a>, or shoot me an email at <span id='email'></span>!</p>
 	
 	</div>
 	<div id='feedback' class='moreInfo'>

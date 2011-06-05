@@ -3,7 +3,8 @@ $(function()	{
 	var loanApp = new J.LoanCalc.LoanApp();
 	loanApp.createLoan();
 
-
+    var emailLink = '<a href=\'mailto:jsantell@gmail.com\' title=\'email Jordan Santell\'>jsantell@gmail.com</a>';
+    $('#email').html(emailLink);
 /*
  * Creating/destroying Loans, Payment Type
  */	
