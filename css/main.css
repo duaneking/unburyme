@@ -23,7 +23,6 @@ body	{
 }
 
 #header	{
-	/*background-image: url(../img/header.png);*/
 	width: 800px;
 	height: 120px;
 	margin: 0px;
@@ -646,8 +645,4 @@ tr.alternateRows1	{
 .graphView	{
 	cursor: pointer;
 	text-decoration: underline;
-}
-
-#googleAds  {
-    
 }
