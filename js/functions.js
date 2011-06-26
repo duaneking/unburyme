@@ -5,29 +5,34 @@ $(function()	{
 
     var emailLink = '<a href=\'mailto:jsantell@gmail.com\' title=\'email Jordan Santell\'>jsantell@gmail.com</a>';
     $('#email').html(emailLink);
+
 /*
  * Creating/destroying Loans, Payment Type
  */	
+
 	$(".paymentTypeButtonLink").click(function ()	{
+
 		if($(this).is('.avaLink'))	{
 			$('#avalanche').removeClass('unselectedPaymentType').addClass('selectedPaymentType');
 			$('#snowball').removeClass('selectedPaymentType').addClass('unselectedPaymentType');
-		loanApp.paymentType = 'avalanche';
+		    loanApp.paymentType = 'avalanche';
 		}
 		else	{
 			$('#snowball').removeClass('unselectedPaymentType').addClass('selectedPaymentType');
-                        $('#avalanche').removeClass('selectedPaymentType').addClass('unselectedPaymentType');
-		loanApp.paymentType = 'snowball';
+            $('#avalanche').removeClass('selectedPaymentType').addClass('unselectedPaymentType');
+		    loanApp.paymentType = 'snowball';
 		}
 		calculate();
 		
 	});
 
 	$('.createLoanPlus').live('click', function ()	{
+
 		loanApp.createLoan();
 	});
 	
 	$('.destroyLoan').live('click', function ()	{
+
 		var deleteID = $(this).attr('id').substr(6);
 		loanApp.destroyLoan(deleteID);
 		calculate();
@@ -38,6 +43,7 @@ $(function()	{
  */
 
 	$('#paymentSlider').slider({
+
 		value: 100,
 		min: 0,
 		max: 5000,
@@ -67,11 +73,14 @@ $(function()	{
  */
 
 	logPaymentToPosition = function(payment)	{
-		//return (payment.log2() / loanApp.config.sliderMax.log2()) * 1000;
+		
+        //return (payment.log2() / loanApp.config.sliderMax.log2()) * 1000;
 		return payment;
 	};	
+
 	logPositionToPayment = function(pos)	{
-		/*
+		
+        /*
 		var payment = (pos / 1000) * loanApp.config.sliderMax.log2();
 		payment = Math.pow(2,payment);
 		payment = Math.round(payment*100)/100;
@@ -111,6 +120,7 @@ $(function()	{
 
 
 	$('#totalMonthlyPayment').live('change', function()	{
+
         var value = $(this).val();
 	    if(loanApp.validatePayment(value))   {
             loanApp.updatePayment(value);
@@ -147,11 +157,11 @@ $(function()	{
 
 		// Validate input
 		if(loanApp.getLoan(uid).validate(field,value))	{
+
             J.LoanCalc.debug('Apparently this loan is valid.');
 			loanApp.updateLoan(uid,field,formatNumber(value));
 			if(field=='minPayment')
 				$('#paymentSlider').slider('option','value',logPaymentToPosition(loanApp.totalPayment));
-		
 		}
 		J.LoanCalc.debug(loanApp.loanArray);	
 		resetEmptyEntry(uid,field,value);
@@ -159,15 +169,18 @@ $(function()	{
 		//If it's an initialized loan, attempt to recalculate
 		//and make all uninitialized inputs invalid
 		if(loanApp.getLoan(uid).isInitialized['loan'] && loanApp.autoCalc)	{
+
 			$('input.uninitialized').addClass('invalidField');
 			calculate();
 		}
+
 	});
 
 
     var calculate = function(firstCall)	{
 		
         if(firstCall || loanApp.autoCalc)	{
+
 			//If no invalidFields, calculate and set blank fields to default values
 			if($('input').hasClass('invalidField'))	{
 				//TODO Flash red divs?
@@ -180,6 +193,7 @@ $(function()	{
 	
 
 	var resetEmptyEntry = function(uid,field,value)	{
+
 		if(field=='name')	{
 			if(value=='')	{
 				value = 'Loan '+(parseInt(uid)+1);
@@ -206,6 +220,7 @@ $(function()	{
  */
 
 	$('.calculate').click(function ()	{
+
 		if($('input').hasClass('uninitialized'))	
 			$('input.uninitialized').addClass('invalidField');	
 		else
@@ -213,6 +228,7 @@ $(function()	{
 	});
 
 	$('.link').click(function ()	{
+
 		if($(this).attr('id')=='link_help')	{
 			$('#help').show();
 			$('#about').hide();
@@ -230,11 +246,8 @@ $(function()	{
 		}
 	});
 
-/*	$('.linkClose').click(function ()	{
-		$('.moreInfo').hide()
-	});
-*/
     $('body').click(function (e)    {
+
         var target = $(e.target);
         if(!target.hasClass('link'))
             $('.moreInfo').hide();
@@ -242,8 +255,9 @@ $(function()	{
 
 
 	$('.help').mouseover(function (e)	{
-		var x = e.pageX + 30;
-		var y = e.pageY - 20;
+	
+	    var x = e.pageX + 30;
+    	var y = e.pageY - 20;
 		$('#helpPopup').css({left:x+'px',top:y+'px'});
 		
 		if($(this).attr('id')=='totalMonthlyPaymentHelp')
@@ -253,7 +267,8 @@ $(function()	{
 	});
 
 	$('.help').mouseout(function ()	{
-		if($(this).attr('id')=='totalMonthlyPaymentHelp')
+		
+        if($(this).attr('id')=='totalMonthlyPaymentHelp')
 			$('#help_tmp').hide();
 		else if($(this).attr('id')=='paymentTypeHelp')
 			$('#help_pt').hide();
@@ -268,7 +283,8 @@ $(function()	{
  */
 
 Number.prototype.log2 =
-	function(){
+    
+    function(){
 		return Math.log(this) / Math.LN2;
 };
 

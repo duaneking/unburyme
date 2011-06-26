@@ -11,35 +11,42 @@ J.LoanCalc.Date = function()	{
 J.LoanCalc.Date.prototype = {
 	
 	create : function()	{
+
 		this.year = 0;
 		this.month = 0;
 		this.setCurrent();
 	},
 	
 	setCurrent : function()	{
+
 		var current = new Date();
 		this.year = current.getFullYear();
 		this.month = current.getMonth();
 	},
 	
 	setDate : function(year, month)	{
+
 		this.year = year;
 		this.month = month;
 	},
 	
 	getMonth : function()	{
+
 		return this.month;
 	},
 	
 	getYear : function()	{
+
 		return this.year;
 	},
 	
 	getFloat : function()	{
+
 		return parseFloat(this.year + (this.month*.01));
 	},
 	
 	getLatest : function(otherDate)	{
+
 		var latestDate = new J.LoanCalc.Date();
 		if(this.getYear() > otherDate.getYear())
 			latestDate.setDate(this.getYear(), this.getMonth());
@@ -55,6 +62,7 @@ J.LoanCalc.Date.prototype = {
 	},
 
 	increment : function()	{
+
 		if(this.month==11)	{
 			this.year++; //Happy new year!
 			this.month = 0;
@@ -64,7 +72,9 @@ J.LoanCalc.Date.prototype = {
 	},
 	
 	print : function()	{
-		var months = [];
+
+		var months = ["Jan", "Feb", "Mar", "Apr", "May", "Jun", "Jul", "Aug", "Sept", "Oct", "Nov", "Dec"];
+        /*
 		months[0]  = "Jan";
 		months[1]  = "Feb";
 		months[2]  = "Mar";
@@ -77,9 +87,8 @@ J.LoanCalc.Date.prototype = {
 		months[9]  = "Oct";
 		months[10] = "Nov";
 		months[11] = "Dec";
-	
-		return months[this.month] + " " + this.year;
-		
+	*/
+		return months[this.month] + " " + this.year;	
 	}
 
 };

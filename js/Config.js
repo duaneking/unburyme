@@ -1,4 +1,3 @@
-
 /*
  * J.LoanCalc.Config
  */

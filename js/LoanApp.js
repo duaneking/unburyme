@@ -1,5 +1,3 @@
-
-
 var J = {};
 J.LoanCalc = {};
 
@@ -25,13 +23,14 @@ J.LoanCalc.LoanApp = function()	{
 
 
 	//Result variables
-	this.extraPayment;
-	this.rollover;
+	this.extraPayment = null;
+	this.rollover = null;
 	this.rolloverMonth = new J.LoanCalc.Date();
 	this.graph = new J.LoanCalc.Graph(this);
 	this.totalResults = new J.LoanCalc.TotalResults(this);
 
 	this.getLoan = function(uid)	{
+
 		var loanIndex = -1;
 		for(var i=0;i<this.loanCount;i++)   {
                         if(this.loanArray[i].uid==uid)
@@ -41,6 +40,7 @@ J.LoanCalc.LoanApp = function()	{
 	};
 	
 	this.getLoanIndex = function(uid)	{
+
 		var loanIndex = -1;
 		for(var i=0;i<this.loanCount;i++)   {
                         if(this.loanArray[i].uid==uid)
@@ -48,6 +48,7 @@ J.LoanCalc.LoanApp = function()	{
                 }
 		return loanIndex;
 	};
+
 	/*
 	 *	createLoan()
 	 *	Creates a new J.LoanCalc.Loan object, pushes it to the loanArray in
@@ -55,6 +56,7 @@ J.LoanCalc.LoanApp = function()	{
 	 *	create the DOM elements.
 	 */
 	this.createLoan = function()	{
+
 		J.LoanCalc.debug('J.LoanCalc.App.createLoan() called');
 		this.loanArray.push(new J.LoanCalc.Loan(this.uidIterator, this));
 		this.loanCount++;
@@ -68,6 +70,7 @@ J.LoanCalc.LoanApp = function()	{
 	 *	loanArray and calls J.LoanCalc.Loan.destroy to remove DOM elements.
 	 */
 	this.destroyLoan = function(uid)	{
+
 		J.LoanCalc.debug(this.getLoan(uid));
 		J.LoanCalc.debug("Destroying Loan "+uid);
 		this.getLoan(uid).destroy()
@@ -84,6 +87,7 @@ J.LoanCalc.LoanApp = function()	{
 	};
 
 	this.updateLoan = function(uid, field, value)	{
+
 		J.LoanCalc.debug('Updating Loan '+uid);
 		switch(field)	{
 			case 'name':
@@ -104,6 +108,7 @@ J.LoanCalc.LoanApp = function()	{
 	};
 	
 	this.updateTotalMinPayment = function()	{
+
 		var totalMin = 0;
 		for(var i=0;i<this.loanCount;i++)	{
 			totalMin += this.loanArray[i].getMinPayment();
@@ -120,6 +125,7 @@ J.LoanCalc.LoanApp = function()	{
 	};
 	
 	this.updatePayment = function(value)	{
+
 		this.totalPayment = value;
 		//Check to see if the new payment is lower than the minimum.. if so, increase.
 		this.updateTotalMinPayment(); 
@@ -129,29 +135,25 @@ J.LoanCalc.LoanApp = function()	{
     
     this.validatePayment = function(value)  {
 
-        var validChars = "0123456789., ",                                                                                   
-        validTest = true,                                                                                                   
-        character;                                                                                                          
-        for(i=0;i<value.length && validTest==true;i++)  {                                                                   
-            character = value.charAt(i);                                                                                    
-            if(validChars.indexOf(character) == -1)                                                                         
-                validTest = false;                                                                                          
+        var validChars = "0123456789., ",
+            validTest = true,                               
+            character = null; 
+        for(i=0;i<value.length && validTest==true;i++)  {   
+            character = value.charAt(i);          
+            if(validChars.indexOf(character) == -1)           
+                validTest = false;                                              
         }
         if(value=='')
             validTest = false;      
 
         this.validatePaymentDisplay(validTest);
-
         if(validTest)
             this.validPayment = true;
         else
             this.validPayment = false;
  
-        return validTest;
-        
+        return validTest;      
     };
-
-
 
     this.validatePaymentDisplay = function(valid)   {
         
@@ -223,7 +225,8 @@ J.LoanCalc.LoanApp = function()	{
 	
 	
 	this.calculate = function(sortedLoans)	{
-		var currentMonth = new J.LoanCalc.Date(),
+	
+    	var currentMonth = new J.LoanCalc.Date(),
 		    calcName = [],
 		    calcBalance = [],
 		    calcInterest = [],
@@ -332,7 +335,8 @@ J.LoanCalc.LoanApp = function()	{
 
 
 	this.sortLoans = function()	{
-		//Sloppy O(n^2) sort, needs improvement
+	
+    	//Sloppy O(n^2) sort, needs improvement
 		var sortedArray = [];
 		var storedIDs = [];
 		var sortField = '';
@@ -389,6 +393,7 @@ J.LoanCalc.LoanApp = function()	{
 
 
     this.impossibleCalcDisplay = function() {
+    
         var slideSpeed = this.config.slideSpeed;
 
         if($('#error').length == 0) {

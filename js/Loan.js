@@ -4,6 +4,7 @@
  */
 
 J.LoanCalc.Loan	= function(uid, loanApp)	{
+
 	this.uid = uid;
 	this.loanApp = loanApp;
 	this.name = 'Loan '+(this.uid+1);
@@ -66,6 +67,7 @@ J.LoanCalc.Loan.prototype = {
 	 *	Removes the DOM elements of a specific loan
 	 */
 	destroy : function()	{
+
 		J.LoanCalc.debug('Destroying loan: '+this.uid);
 		$('#loanbar'+this.uid).slideUp(this.loanApp.config.slideSpeed, function(){
 			$('#loanbar'+this.uid).remove();
@@ -86,6 +88,7 @@ J.LoanCalc.Loan.prototype = {
 	},
 
 	setName : function(name)	{
+
 		this.name = name;
 	},
 	
@@ -108,22 +111,27 @@ J.LoanCalc.Loan.prototype = {
 	},
 
 	getName : function()	{
+
 		return this.name;
 	},
 
 	getBalance : function()	{
+
 		return this.balance;
 	},
 
 	getMinPayment : function()	{
+
 		return this.minPayment;
 	},
 
 	getInterest : function()		{
+
 		return this.interest;
 	},
 	
 	getValue : function(field)	{
+
 		var value;
 		switch(field)	{
 			case 'name':
@@ -143,14 +151,17 @@ J.LoanCalc.Loan.prototype = {
 	},
 
 	getUID : function()	{
+
 		return this.uid;
 	},
 
 	calculate : function()	{
+
 		this.results.calculate();
 	},
 
 	validate : function(field,value)	{
+
 		var validChars = "0123456789., ",
 		validTest = true,
 		character;
@@ -192,6 +203,7 @@ J.LoanCalc.Loan.prototype = {
 
 
 	cleanField : function(field)	{
+
 		if(field=='loan')
 			field = 'bar';
 		$('#loan'+field+this.uid).removeClass('uninitialized');
@@ -200,6 +212,7 @@ J.LoanCalc.Loan.prototype = {
 
 
 	initializeField : function(field)	{
+
 		this.isInitialized[field] = 1;
 		this.cleanField(field);
 
@@ -207,7 +220,6 @@ J.LoanCalc.Loan.prototype = {
 			this.isInitialized['loan'] = 1;
 			this.cleanField('loan');
 		}
-
 	}
 
 };

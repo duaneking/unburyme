@@ -4,6 +4,7 @@
  */
 
 J.LoanCalc.TotalResults = function(loanApp)	{
+
 	this.loanApp = loanApp;
 	this.finalPayOffDate = new J.LoanCalc.Date();
 	this.totalInterest = 0;
@@ -19,6 +20,7 @@ J.LoanCalc.TotalResults = function(loanApp)	{
 	};
 
 	this.draw = function()	{
+
 		var html = '<div id="totalResultsBar">';
 		html += '	<div class="name">Loan Total</div>\n';
 		html += '	<div class="payoffDateText">debt free by</div><div class="payoffDate">'+this.finalPayOffDate.print()+'</div>\n';
@@ -29,11 +31,13 @@ J.LoanCalc.TotalResults = function(loanApp)	{
 	};
 	
 	this.clearData = function()	{
+
 		this.finalPayOffDate.setCurrent();
 		this.totalInterest = 0;
 	};
 
 	this.reset = function()	{
+
 		this.clearData();
 		$('#totalResultsContainer').fadeOut(this.loanApp.config.fadeSpeed);
 	}

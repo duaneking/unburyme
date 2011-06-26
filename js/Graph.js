@@ -39,6 +39,7 @@ J.LoanCalc.Graph = function(loanApp)	{
 	};
 	
 	this.drawTitle = function(field)	{
+
 		$('#graphTitle').fadeIn(this.loanApp.config.fadeSpeed);
 		var title;
 		switch(field)	{
@@ -70,17 +71,18 @@ J.LoanCalc.Graph = function(loanApp)	{
 	};
 
 	this.makeXAxis = function()	{
-		var date = new J.LoanCalc.Date();
-		date.setCurrent();
-		var month = date.getMonth();
-		var year = date.getYear()+1;
-        var monthMod = 1;
-        var yearMod = 1;
 
-		var untilNewYear = (12 - month)%12;
-		
+		var date = new J.LoanCalc.Date(),
+            month = date.getMonth(),
+		    year = date.getYear()+1,
+            monthMod = 1,
+            yearMod = 1,
+            untilNewYear = (12 - month)%12,
+		    maxData = 0;
+
+		date.setCurrent();
+
 		//Find which data set is the largest
-		var maxData = 0;
 		for(var i=0;i<this.loanApp.initLoanCount();i++)	{
 			if(this.loanData[i].length > maxData)
 				maxData = this.loanData[i].length;
@@ -106,6 +108,7 @@ J.LoanCalc.Graph = function(loanApp)	{
 	};
 
 	this.getGraphData = function(field)	{
+
 		this.clearGraphData();
 		for(var i=0;i<this.loanApp.initLoanCount();i++)	{
 			this.loanData.push(this.loanApp.initLoanArray[i].results.getGraphData(field));
@@ -114,6 +117,7 @@ J.LoanCalc.Graph = function(loanApp)	{
 	};
 
 	this.clearGraphData = function()	{
+
 		this.loanDataSet = [];
 		this.loanNames = [];
 		this.loanData = [];
@@ -121,16 +125,17 @@ J.LoanCalc.Graph = function(loanApp)	{
 	};
 
 	this.dollarFormatter = function(v, axis)	{
+
 		return "$"+v;
 	};
 
 	this.reset = function()	{
+
 		$('#graph').fadeOut(this.loanApp.config.fadeSpeed);
 		$('#graphViewOptions').fadeOut(this.loanApp.config.fadeSpeed);
 		$('#graphTitle').fadeOut(this.loanApp.config.fadeSpeed);
 		this.clearGraphData();
 		this.lastFieldGraphed = 'princRemaining';
 	};
-
 
 };

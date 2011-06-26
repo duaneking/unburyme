@@ -4,6 +4,7 @@
  */
 
 J.LoanCalc.ResultBar = function(uid, loan, loanApp)	{
+
 	this.uid = uid;
 	this.loan = loan;
 	this.loanApp = loanApp;
@@ -27,12 +28,14 @@ J.LoanCalc.ResultBar.prototype = {
 	},
 
 	destroy : function()	{
+
 		$('#resultsContainer'+this.uid).slideUp(this.loanApp.config.slideSpeed, function(){
 			$('#resultsContainer'+this.uid).remove();
 		});		
 	},
 	
 	drawStart : function()	{
+
 		//Reset graph data
 		this.clearGraphData();
 
@@ -51,6 +54,7 @@ J.LoanCalc.ResultBar.prototype = {
 	},
 
 	drawMain : function(iterator,currentMonth,payment,princPaid,interestPaid,princRemaining)	{
+
 		var alternateRows = currentMonth.getMonth() % 2;
 		this.htmlMonthly += '<tr class=\'alternateRows'+alternateRows+'\'>\n';
 		this.htmlMonthly += '	<td class=\'tBody month\'>'+currentMonth.print()+'</td>\n';
@@ -96,6 +100,7 @@ J.LoanCalc.ResultBar.prototype = {
 	},
 
 	clearGraphData : function()	{
+
 		this.graphData_princRemaining = [];
 		this.graphData_princPaid = [];
 		this.graphData_totalInterestPaid = [];
@@ -103,6 +108,7 @@ J.LoanCalc.ResultBar.prototype = {
 	},	
 
 	getGraphData : function(field)	{
+
 		var dataToReturn;
 		switch(field)	{
 			case 'princRemaining':
@@ -122,6 +128,7 @@ J.LoanCalc.ResultBar.prototype = {
 	},
 
 	click : function()	{
+
 		if($('#monthlyResults'+this.uid).css('display')=='none')
 			$('#monthlyResults'+this.uid).slideDown(this.loanApp.config.slideSpeed);
 		else
